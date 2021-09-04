@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!--第一种，使用实现类午餐构造函数创建bean，最常用-->
+<!--    <bean id="userDao" class="com.example.springboot.impl.UserDaoImpl" scope="singleton" init-method="init" destroy-method="destory"></bean>-->
+<!--第二种，使用静态工厂函数创建bean-->
+<!--    <bean id="userDao" class="com.example.springboot.factory.StaticFactory" factory-method="getUserDao"></bean>-->
+<!--第三种，使用实例化工厂函数创建bean-->
+<!--    <bean id="factory" class="com.example.springboot.factory.DynamicFactory"></bean>-->
+<!--    <bean id="userDao" factory-bean="factory" factory-method="getUserDao"></bean>-->
+
+<!--注入普通类型-->
+<!--    <bean id="userDao" class="com.example.springboot.impl.UserDaoImpl" scope="singleton" init-method="init" destroy-method="destory">-->
+<!--        <property name="userName" value="zhangsan"></property>-->
+<!--        <property name="age" value="18"></property>-->
+<!--    </bean>-->
+<!--注入集合类型-->
+    <bean id="userDao" class="com.example.springboot.impl.UserDaoImpl" scope="singleton" init-method="init" destroy-method="destory">
+        <property name="strList">
+            <list>
+                <value>aaa</value>
+                <value>bbb</value>
+                <value>ccc</value>
+            </list>
+        </property>
+        <property name="userMap">
+            <map>
+                <entry key="user1" value-ref="user1"></entry>
+                <entry key="user2" value-ref="user2"></entry>
+                <entry key="user3" value-ref="user3"></entry>
+            </map>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="p1">ppp1</prop>
+                <prop key="p2">ppp2</prop>
+                <prop key="p3">ppp3</prop>
+            </props>
+        </property>
+    </bean>
+<!--第一种，使用set方法注入-->
+<!--    <bean id="userService" class="com.example.springboot.impl.UserServiceImpl">-->
+<!--        <property name="res" ref="userDao"></property>-->
+<!--    </bean>-->
+<!--第二种，使用p命名空间-->
+<!--    <bean id="userService" class="com.example.springboot.impl.UserServiceImpl" p:res-ref="userDao"></bean>-->
+<!--第三种，使用有参构造函数-->
+    <bean id="userService" class="com.example.springboot.impl.UserServiceImpl">
+        <constructor-arg name="res" ref="userDao"></constructor-arg>
+    </bean>
+
+    <bean id="user1" class="com.example.springboot.entity.User">
+        <property name="age" value="18"></property>
+        <property name="userName" value="laochen"></property>
+    </bean>
+    <bean id="user2" class="com.example.springboot.entity.User">
+        <property name="age" value="12"></property>
+        <property name="userName" value="laomo"></property>
+    </bean>
+    <bean id="user3" class="com.example.springboot.entity.User">
+        <property name="age" value="24"></property>
+        <property name="userName" value="laowang"></property>
+    </bean>
+
+    <import resource="applicationContext-user.xml"></import>
+    <import resource="applicationContext-product.xml"></import>
+    <import resource="applicationContext-jdbc.xml"></import>
+</beans>
