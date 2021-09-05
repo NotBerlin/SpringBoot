@@ -30,10 +30,10 @@ public class DataSourceTest {
     @Test
     public void test1() throws PropertyVetoException, SQLException {
         ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
-        comboPooledDataSource.setDriverClass("com.mysql.jdbc.Driver");
+        comboPooledDataSource.setDriverClass("com.mysql.cj.jdbc.Driver");
         comboPooledDataSource.setJdbcUrl("jdbc:mysql://localhost:3306/test");
         comboPooledDataSource.setUser("root");
-        comboPooledDataSource.setPassword("root");
+        comboPooledDataSource.setPassword("password");
         Connection connection = comboPooledDataSource.getConnection();
         System.out.println(connection);
         connection.close();
