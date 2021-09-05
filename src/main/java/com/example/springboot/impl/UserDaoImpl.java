@@ -3,12 +3,14 @@ package com.example.springboot.impl;
 import com.example.springboot.dao.UserDao;
 import com.example.springboot.entity.User;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-@Component("userDao")
+//@Component("userDao")
+@Repository("userDao")
 public class UserDaoImpl implements UserDao {
 
     private String userName;
