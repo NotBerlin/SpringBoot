@@ -1,20 +1,22 @@
 package com.example.springboot.controller;
 
+import com.example.springboot.config.SpringCofiguration;
 import com.example.springboot.dao.Data;
 import com.example.springboot.entity.User;
 import com.example.springboot.entity.VO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.beans.PropertyVetoException;
+import java.util.*;
 
 @RestController
 @RequestMapping("/hello")
@@ -101,5 +103,26 @@ public class HelloCtroller {
     @GetMapping(value = "/test10")
     public void test10(@RequestHeader(value = "User-agent", required = true) String userAgent) {
         System.out.println(userAgent);
+    }
+
+    @PostMapping(value = "/database1")
+    public Data database1(@RequestBody Map<String, Object> params) throws PropertyVetoException {
+        System.out.println(params.toString());
+        // 使用bean
+//        ApplicationContext app = new AnnotationConfigApplicationContext(SpringCofiguration.class);
+//        JdbcTemplate jdbcTemplate = (JdbcTemplate) app.getBean("jdbcTemplate");
+        ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
+        comboPooledDataSource.setDriverClass("com.mysql.jdbc.Driver");
+        comboPooledDataSource.setJdbcUrl("jdbc:mysql://10.0.0.210:3306/studyDB?useSSL=false");
+        comboPooledDataSource.setUser("root");
+        comboPooledDataSource.setPassword("root");
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+// 设置数据源
+        jdbcTemplate.setDataSource(comboPooledDataSource);
+ // 执行操作
+        int row = jdbcTemplate.update("insert into account values(?, ?)", params.get("name"), params.get("money"));
+        System.out.println(row);
+        Data result = new Data("操作成功",params , 0);
+        return result;
     }
 }

@@ -69,4 +69,8 @@ public class DataSourceTest {
         System.out.println(connection);
         connection.close();
     }
+
+    @Test
+    public void test5() {
+    }
 }
