@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Data<T> implements Serializable {
     private String msg;
-    private Object data;
+    private T data;
     private Number code;
 
     public Data(String msg, T data, Number code) {
@@ -22,11 +22,11 @@ public class Data<T> implements Serializable {
         return code;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 

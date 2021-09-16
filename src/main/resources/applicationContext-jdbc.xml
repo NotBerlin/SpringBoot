@@ -4,7 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/beans/spring-context.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         ">
 <!--    <bean id="comboPooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
 <!--        <property name="driverClass" value="com.mysql.jdbc.Driver"></property>-->
@@ -16,7 +16,7 @@
 <!--首先命名空间是 xmlns:context="http://www.springframework.org/schema/context"-->
 <!--其次schemaLocation是 http://www.springframework.org/schema/context http://www.springframework.org/schema/beans/spring-context.xsd"-->
 <!--最后 加载外部properties文件-->
-    <context:property-placeholder location="classpath:applicationContext-jdbc.xml" />
+    <context:property-placeholder location="classpath:jdbc.properties" />
     <bean id="comboPooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="${jdbc.driver}"></property>
         <property name="jdbcUrl" value="${jdbc.url}"></property>
