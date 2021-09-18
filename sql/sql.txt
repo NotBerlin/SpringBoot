@@ -1,0 +1,75 @@
+-- 对数据库基础操作
+-- 创建表
+CREATE TABLE IF NOT EXISTS `user_table`(
+   `user_id` INT UNSIGNED AUTO_INCREMENT,
+	 `key_id` VARCHAR(100) NOT NULL,
+   `user_name` VARCHAR(100) NOT NULL,
+   `user_account` VARCHAR(40) NOT NULL,
+	 `user_password` VARCHAR(60) NOT NULL,
+   PRIMARY KEY ( `user_id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `user_table_body`(
+	 `key_id` VARCHAR(100) NOT NULL,
+   `user_height` VARCHAR(100) NOT NULL,
+   `user_weight` VARCHAR(40) NOT NULL,
+	 `user_looks` VARCHAR(60) NOT NULL,
+   PRIMARY KEY ( `key_id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `user_table_role`(
+	 `key_id` VARCHAR(100) NOT NULL,
+	 `user_id` VARCHAR(100) NOT NULL,
+	 `role_code` VARCHAR(100) NOT NULL,
+   PRIMARY KEY ( `key_id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `user_table_power` (
+		`key_id` VARCHAR(100) NOT NULL,
+		`role_code` VARCHAR(100) NOT NULL,
+		`router_path` VARCHAR(100),
+		`parent_code` VARCHAR(100),
+		`power_code` VARCHAR(100) NOT NULL,
+		PRIMARY KEY (`key_id`)
+)ENGINE=INNODB DEFAULT CHARSET=utf8;
+-- 插入
+INSERT INTO account (`name`, `money`) VALUES ("老莫", 10000)
+INSERT INTO user_table_body (key_id, user_height, user_weight, user_looks) VALUES ('16317748998051329488658637', '188', '70', '帅')
+-- 选择
+SELECT `name`, `money` FROM account WHERE (`money` = 5000 OR `name` = "老莫")
+SELECT a.key_id, a.role_code, a.router_path, a.parent_code, a.power_code, a.power_name FROM user_table_power a INNER JOIN user_table_role b ON b.user_id = '16317748998051329488658637' AND b.role_code = a.role_code
+-- 更新
+UPDATE account SET `name`="老汪", `money` = 2 WHERE (`name`="tom2")
+-- 删除
+
+DELETE FROM account WHERE (`name` = "tom3")
+-- 使用LIKE关键字
+SELECT `name`, `money` FROM account WHERE (`name` LIKE "老%") LIMIT 2
+-- 使用UNION关键字
+SELECT `name`, `money` FROM account WHERE (`name` LIKE "老%") UNION DISTINCT SELECT `name`, `money` FROM account WHERE (`name` LIKE "老%")
+-- 排序
+SELECT `name`, `money` FROM account ORDER BY money DESC
+-- 分组
+SELECT `name`, COUNT(*) FROM account GROUP BY `name`
+-- 关联表
+SELECT a.`name`, b.age, a.money FROM account a INNER JOIN students b ON a.`name` = b.`name`
+SELECT a.user_name, b.user_height, b.user_weight, b.user_looks FROM user_table_body b WHERE key_id = (SELECT key_id FROM user_table a WHERE user_account = "13411111111" AND user_password = "test123456.")
+SELECT a.user_name, b.user_height, b.user_weight, b.user_looks FROM user_table a INNER JOIN user_table_body b ON a.user_account = "13411111111" AND a.user_password = "test123456." AND a.key_id = b.key_id
+-- NULL关键字，结合左关联，查询有效数据
+SELECT a.`name`, b.age, a.money FROM account a LEFT JOIN students b ON a.`name` = b.`name` WHERE age IS NOT NULL
+-- 正则表达式
+SELECT `name`, `money` FROM account WHERE `name` REGEXP "^tom*"
+-- 事务
+BEGIN;
+INSERT INTO account (`name`, `money`) VALUES ("abc", 239);
+INSERT INTO account (`name`, `money`) VALUES ("a111", 232);
+COMMIT;
+-- 使用ALERT修改表字段
+ALTER TABLE account ADD keyID INTEGER(68)
+ALTER TABLE user_table_role ADD role_name VARCHAR(50)
+ALTER TABLE user_table_power ADD power_name VARCHAR(50)
+-- 索引
+CREATE INDEX nameIndex ON account (`name`);
+ALTER TABLE account ADD INDEX nameIndex(`name`);
+DROP INDEX nameIndex ON account;
+-- 配合索引进行查询
+SELECT * FROM account;
+-- 序列
+ALTER TABLE account AUTO_INCREMENT = 1
